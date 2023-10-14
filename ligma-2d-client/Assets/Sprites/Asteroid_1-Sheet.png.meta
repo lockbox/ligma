@@ -115,8 +115,8 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 32
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,8 +124,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c717d330f1f354b3f80c2c798badb417
-      internalID: 976810592
+      spriteID: b0e17f6ce09ce4c71961f98ea2819ed5
+      internalID: -1887285178
       vertices: []
       indices: 
       edges: []
@@ -134,10 +134,10 @@ TextureImporter:
       name: Asteroid_1-Sheet_1
       rect:
         serializedVersion: 2
-        x: 32
+        x: 128
         y: 0
-        width: 32
-        height: 32
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -145,8 +145,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c32ee7df8db954562850c1651fcad7e1
-      internalID: 932590975
+      spriteID: 96b194085eb4245a0a92c0b6d71f6f00
+      internalID: 651285229
       vertices: []
       indices: 
       edges: []
@@ -155,10 +155,10 @@ TextureImporter:
       name: Asteroid_1-Sheet_2
       rect:
         serializedVersion: 2
-        x: 64
+        x: 256
         y: 0
-        width: 32
-        height: 32
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,8 +166,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9f3942d4326824590a9fffeb0f1f628c
-      internalID: 522601446
+      spriteID: 37073821ad90c4e0194086af120dc6a7
+      internalID: -1878396935
       vertices: []
       indices: 
       edges: []
@@ -176,10 +176,10 @@ TextureImporter:
       name: Asteroid_1-Sheet_3
       rect:
         serializedVersion: 2
-        x: 96
+        x: 384
         y: 0
-        width: 32
-        height: 32
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -187,8 +187,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 32865cbb388f04b24a3865f52d2c9f8b
-      internalID: 458629314
+      spriteID: d89d9d58938db469cb198f01ab8d5445
+      internalID: -1159445434
       vertices: []
       indices: 
       edges: []
@@ -197,10 +197,10 @@ TextureImporter:
       name: Asteroid_1-Sheet_4
       rect:
         serializedVersion: 2
-        x: 128
+        x: 512
         y: 0
-        width: 32
-        height: 32
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -208,8 +208,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7c1ae92621bc14985b6cc184fc09f669
-      internalID: -530970353
+      spriteID: d97fb24db80b74f9b95ea85c469190d1
+      internalID: 1549546873
       vertices: []
       indices: 
       edges: []
@@ -225,11 +225,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Asteroid_1-Sheet_0: 976810592
-      Asteroid_1-Sheet_1: 932590975
-      Asteroid_1-Sheet_2: 522601446
-      Asteroid_1-Sheet_3: 458629314
-      Asteroid_1-Sheet_4: -530970353
+      Asteroid_1-Sheet_0: -1887285178
+      Asteroid_1-Sheet_1: 651285229
+      Asteroid_1-Sheet_2: -1878396935
+      Asteroid_1-Sheet_3: -1159445434
+      Asteroid_1-Sheet_4: 1549546873
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
