@@ -1,0 +1,11 @@
+default_server = 'local'
+
+[[identity_configs]]
+identity = '5fc9c102c694a8bd7a96e3588bd0f760aa4a51915ebfcd78caa06995cd5b38b9'
+token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJoZXhfaWRlbnRpdHkiOiI1ZmM5YzEwMmM2OTRhOGJkN2E5NmUzNTg4YmQwZjc2MGFhNGE1MTkxNWViZmNkNzhjYWEwNjk5NWNkNWIzOGI5IiwiaWF0IjoxNjk3MzA2NzM0LCJleHAiOm51bGx9.g2by_y_4vrir066PAg_eOXESrAS5Rw3LzlwehmBwm1iFxtiHSenb7y21ADbJFkTLMj4Gp3AdKbcmo_ASN6P-RA'
+
+[[server_configs]]
+nickname = 'local'
+host = '127.0.0.1:3000'
+protocol = 'http'
+default_identity = '5fc9c102c694a8bd7a96e3588bd0f760aa4a51915ebfcd78caa06995cd5b38b9'
