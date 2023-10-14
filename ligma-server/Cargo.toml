@@ -9,5 +9,6 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-spacetimedb = "0.7.0"
+spacetimedb = { version = "0.7.0" , features = ["getrandom"]}
 log = "0.4"
+rand = "0.8.5"

@@ -13,6 +13,7 @@ namespace SpacetimeDB.Types
 		None,
 		CreatePlayer,
 		MovePlayer,
+		ObjectSpawnerAgent,
 		StopPlayer,
 	}
 
@@ -42,6 +43,14 @@ namespace SpacetimeDB.Types
 				return (MovePlayerArgsStruct)Args;
 			}
 		}
+		public ObjectSpawnerAgentArgsStruct ObjectSpawnerAgentArgs
+		{
+			get
+			{
+				if (Reducer != ReducerType.ObjectSpawnerAgent) throw new SpacetimeDB.ReducerMismatchException(Reducer.ToString(), "ObjectSpawnerAgent");
+				return (ObjectSpawnerAgentArgsStruct)Args;
+			}
+		}
 		public StopPlayerArgsStruct StopPlayerArgs
 		{
 			get
@@ -68,6 +77,13 @@ namespace SpacetimeDB.Types
 					return new object[] {
 						args.Start,
 						args.Direction,
+					};
+				}
+				case ReducerType.ObjectSpawnerAgent:
+				{
+					var args = ObjectSpawnerAgentArgs;
+					return new object[] {
+						args.PrevTime,
 					};
 				}
 				case ReducerType.StopPlayer:

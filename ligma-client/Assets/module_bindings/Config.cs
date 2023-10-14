@@ -13,6 +13,10 @@ namespace SpacetimeDB.Types
 		public uint Version;
 		[Newtonsoft.Json.JsonProperty("message_of_the_day")]
 		public string MessageOfTheDay;
+		[Newtonsoft.Json.JsonProperty("map_extents")]
+		public uint MapExtents;
+		[Newtonsoft.Json.JsonProperty("num_object_nodes")]
+		public uint NumObjectNodes;
 
 		private static Dictionary<uint, Config> Version_Index = new Dictionary<uint, Config>(16);
 
@@ -34,6 +38,8 @@ namespace SpacetimeDB.Types
 			{
 				new SpacetimeDB.SATS.ProductTypeElement("version", SpacetimeDB.SATS.AlgebraicType.CreatePrimitiveType(SpacetimeDB.SATS.BuiltinType.Type.U32)),
 				new SpacetimeDB.SATS.ProductTypeElement("message_of_the_day", SpacetimeDB.SATS.AlgebraicType.CreatePrimitiveType(SpacetimeDB.SATS.BuiltinType.Type.String)),
+				new SpacetimeDB.SATS.ProductTypeElement("map_extents", SpacetimeDB.SATS.AlgebraicType.CreatePrimitiveType(SpacetimeDB.SATS.BuiltinType.Type.U32)),
+				new SpacetimeDB.SATS.ProductTypeElement("num_object_nodes", SpacetimeDB.SATS.AlgebraicType.CreatePrimitiveType(SpacetimeDB.SATS.BuiltinType.Type.U32)),
 			});
 		}
 
@@ -47,6 +53,8 @@ namespace SpacetimeDB.Types
 			{
 				Version = productValue.elements[0].AsU32(),
 				MessageOfTheDay = productValue.elements[1].AsString(),
+				MapExtents = productValue.elements[2].AsU32(),
+				NumObjectNodes = productValue.elements[3].AsU32(),
 			};
 		}
 
@@ -73,6 +81,30 @@ namespace SpacetimeDB.Types
 			{
 				var productValue = entry.Item1.AsProductValue();
 				var compareValue = (string)productValue.elements[1].AsString();
+				if (compareValue == value) {
+					yield return (Config)entry.Item2;
+				}
+			}
+		}
+
+		public static System.Collections.Generic.IEnumerable<Config> FilterByMapExtents(uint value)
+		{
+			foreach(var entry in SpacetimeDBClient.clientDB.GetEntries("Config"))
+			{
+				var productValue = entry.Item1.AsProductValue();
+				var compareValue = (uint)productValue.elements[2].AsU32();
+				if (compareValue == value) {
+					yield return (Config)entry.Item2;
+				}
+			}
+		}
+
+		public static System.Collections.Generic.IEnumerable<Config> FilterByNumObjectNodes(uint value)
+		{
+			foreach(var entry in SpacetimeDBClient.clientDB.GetEntries("Config"))
+			{
+				var productValue = entry.Item1.AsProductValue();
+				var compareValue = (uint)productValue.elements[3].AsU32();
 				if (compareValue == value) {
 					yield return (Config)entry.Item2;
 				}
