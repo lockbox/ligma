@@ -27,6 +27,15 @@ pub struct SpawnableEntityComponent {
     pub entity_id: u64,
 }
 
+/// Available colors for the [`PlayerComponent`]
+#[derive(SpacetimeType, Clone, Debug, Default)]
+pub enum PlayerColorType {
+    #[default]
+    Red,
+    Blue,
+    Green,
+}
+
 #[derive(Clone, Debug)]
 #[spacetimedb(table)]
 pub struct PlayerComponent {
@@ -41,6 +50,9 @@ pub struct PlayerComponent {
 
     /// Reflects the login state of the user
     pub logged_in: bool,
+
+    /// Color of the player
+    pub color: PlayerColorType,
 }
 
 #[derive(SpacetimeType, Clone, Debug)]
@@ -126,6 +138,7 @@ pub fn create_player(ctx: ReducerContext, username: String) -> Result<(), String
         owner_id,
         username: username.clone(),
         logged_in: true,
+        color: PlayerColorType::default(),
     })
     .expect("Failed to insert player component.");
 
@@ -240,7 +253,7 @@ pub fn stop_player(ctx: ReducerContext, location: StdbVector2) -> Result<(), Str
     return Err("Player not found".to_string());
 }
 
-#[spacetimedb(reducer, repeat=1sec)]
+#[spacetimedb(reducer, repeat=2sec)]
 pub fn object_spawner_agent(_ctx: ReducerContext, _prev_time: Timestamp) -> Result<(), String> {
     let config = Config::filter_by_version(&0).ok_or("Failed to find valid config".to_string())?;
 
