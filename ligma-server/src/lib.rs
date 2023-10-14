@@ -1,5 +1,5 @@
-use spacetimedb::{spacetimedb, Identity, SpacetimeType, Timestamp, ReducerContext};
 use log;
+use spacetimedb::{spacetimedb, Identity, ReducerContext, SpacetimeType, Timestamp};
 
 #[spacetimedb(table)]
 #[derive(Clone)]
@@ -92,7 +92,7 @@ pub fn create_player(ctx: ReducerContext, username: String) -> Result<(), String
         username: username.clone(),
         logged_in: true,
     })
-        .expect("Failed to insert player component.");
+    .expect("Failed to insert player component.");
 
     // The MobileLocationComponent is used to calculate the current position
     // of an entity that can move smoothly in the world. We are using 2d
@@ -102,7 +102,8 @@ pub fn create_player(ctx: ReducerContext, username: String) -> Result<(), String
         location: StdbVector2::ZERO,
         direction: StdbVector2::ZERO,
         move_start_timestamp: Timestamp::UNIX_EPOCH,
-    }).expect("Failed to insert player mobile entity component.");
+    })
+    .expect("Failed to insert player mobile entity component.");
 
     log::info!("Player created: {}({})", username, entity_id);
 
@@ -112,7 +113,11 @@ pub fn create_player(ctx: ReducerContext, username: String) -> Result<(), String
 /// Module initializer, craetes global config
 #[spacetimedb(init)]
 pub fn init() {
-    Config::insert(Config { version: 0, message_of_the_day: "How do you do, fellow kids?".to_string() }).expect("Failed to insert config");
+    Config::insert(Config {
+        version: 0,
+        message_of_the_day: "How do you do, fellow kids?".to_string(),
+    })
+    .expect("Failed to insert config");
 }
 
 /// called when the client connects, updates the logged_in state to true
@@ -130,7 +135,6 @@ pub fn identity_disconnected(ctx: ReducerContext) {
 /// This helper function gets the PlayerComponent, sets the logged
 /// in variable and updates the SpacetimeDB table row.
 pub fn update_player_login_state(ctx: ReducerContext, logged_in: bool) {
-
     if let Some(player) = PlayerComponent::filter_by_owner_id(&ctx.sender) {
         let entity_id = player.entity_id;
         // We clone the PlayerComponent so we can edit it and pass it back.
@@ -151,7 +155,6 @@ pub fn move_player(
     start: StdbVector2,
     direction: StdbVector2,
 ) -> Result<(), String> {
-
     let owner_id = ctx.sender;
     // First, look up the player using the sender identity, then use that
     // entity_id to retrieve and update the MobileLocationComponent
