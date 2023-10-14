@@ -163,3 +163,6 @@ crashlytics-build.properties
 
 # MSVC Windows builds of rustc generate these, which store debugging information
 *.pdb
+
+# ignore keys
+**/id_*
