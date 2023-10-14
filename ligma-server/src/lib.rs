@@ -1,6 +1,7 @@
 use log;
 use rand::Rng;
-use spacetimedb::{spacetimedb, Identity, ReducerContext, SpacetimeType, Timestamp};
+use spacetimedb::{query, spacetimedb, Identity, ReducerContext, SpacetimeType, Timestamp};
+use std::collections::BTreeMap;
 
 #[spacetimedb(table)]
 #[derive(Clone)]
@@ -28,7 +29,7 @@ pub struct SpawnableEntityComponent {
 }
 
 /// Available colors for the [`PlayerComponent`]
-#[derive(SpacetimeType, Clone, Debug, Default)]
+#[derive(SpacetimeType, Clone, Copy, Debug, Default, Ord, PartialOrd, Eq, PartialEq)]
 pub enum PlayerColorType {
     #[default]
     Red,
@@ -164,7 +165,7 @@ pub fn init() {
     Config::insert(Config {
         version: 0,
         message_of_the_day: "How do you do, fellow kids?".to_string(),
-        map_extents: 50,
+        map_extents: 25,
         num_object_nodes: 30,
     })
     .expect("Failed to insert config");
@@ -173,9 +174,57 @@ pub fn init() {
     spacetimedb::schedule!("1000ms", object_spawner_agent(_, Timestamp::now()));
 }
 
-/// called when the client connects, updates the logged_in state to true
+/// Chooses the new color for the player by:
+/// - get all currently logged in players
+/// - for all colors available
+///     - get the current user color count
+/// - the color with the fewest active players gets assigned to the current player
+pub fn update_player_color(ctx: ReducerContext) {
+    // if we can get a valid player handle
+    if let Some(player) = PlayerComponent::filter_by_owner_id(&ctx.sender) {
+        // get the color of all currently logged in players
+        let mut color_count: BTreeMap<PlayerColorType, usize> = BTreeMap::new();
+        let active_players = query!(|player: PlayerComponent| player.logged_in == true);
+
+        // count the number of active players that have each color
+        for player in active_players {
+            let color = player.color;
+
+            match color_count.get(&color) {
+                Some(count) => _ = color_count.insert(color, count.saturating_add(1)),
+                None => break,
+            }
+        }
+
+        // get the color with the smallest count, or red
+        let mut min_color: PlayerColorType = PlayerColorType::default();
+        let mut min_count: usize = usize::MAX;
+        for (&color, &num) in color_count.iter() {
+            // set new min if the count is smaller
+            if num < min_count {
+                min_count = num;
+                min_color = color;
+            }
+        }
+
+        // set the player color to the `min_color`
+        let entity_id = player.entity_id;
+        let mut colored_player = player.clone();
+        colored_player.color = min_color;
+
+        // update the new player
+        PlayerComponent::update_by_entity_id(&entity_id, colored_player);
+    }
+}
+
+/// called when the client connects, updates the logged_in state to true,
+/// Once the client has connected we need to update the color
 #[spacetimedb(connect)]
 pub fn identity_connected(ctx: ReducerContext) {
+    // update color
+    update_player_color(ctx);
+
+    // set the player to logged in
     update_player_login_state(ctx, true);
 }
 
@@ -193,7 +242,7 @@ pub fn update_player_login_state(ctx: ReducerContext, logged_in: bool) {
         // We clone the PlayerComponent so we can edit it and pass it back.
         let mut player = player.clone();
         player.logged_in = logged_in;
-        log::debug!("Player: {:?} has logged in", player);
+        log::info!("Player: {:?} has logged in", player);
         PlayerComponent::update_by_entity_id(&entity_id, player);
     }
 }
@@ -202,7 +251,7 @@ pub fn update_player_login_state(ctx: ReducerContext, logged_in: bool) {
 /// values. The client will call this regularly as the direction of movement
 /// changes.
 ///
-/// TODO: validate moves before commiting the movement to the DB
+/// TODO: validate moves before committing the movement to the DB
 #[spacetimedb(reducer)]
 pub fn move_player(
     ctx: ReducerContext,
@@ -243,7 +292,7 @@ pub fn stop_player(ctx: ReducerContext, location: StdbVector2) -> Result<(), Str
             mobile.location = location;
             mobile.direction = StdbVector2::ZERO;
             mobile.move_start_timestamp = Timestamp::UNIX_EPOCH;
-            log::debug!("Stopping player: {:?}", player);
+            log::info!("Stopping player: {:?}", player);
             MobileLocationComponent::update_by_entity_id(&player.entity_id, mobile);
 
             return Ok(());
@@ -263,7 +312,7 @@ pub fn object_spawner_agent(_ctx: ReducerContext, _prev_time: Timestamp) -> Resu
     // get number of nodes, exit if the limit is already met
     let spawned_object_count = ObjectNodeComponent::iter().count();
     if spawned_object_count >= object_limit {
-        log::info!("Maximum objects spawn, skipping spawn.");
+        log::debug!("Maximum objects spawned, skipping spawn.");
         return Ok(());
     }
 
@@ -304,5 +353,3 @@ pub fn object_spawner_agent(_ctx: ReducerContext, _prev_time: Timestamp) -> Resu
 
     Ok(())
 }
-
-
