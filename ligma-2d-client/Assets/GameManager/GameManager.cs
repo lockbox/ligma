@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
+
+    public GameObject playerPrefab;
+
     private void Start()
     {
         instance = this;
@@ -70,12 +73,15 @@ public class GameManager : MonoBehaviour
 
     void OnSubscriptionApplied()
     {
+        Debug.Log("test");
         // If we don't have any data for our player, then we are creating a
         // new one. Let's show the username dialog, which will then call the
         // create player reducer
         var player = PlayerComponent.FilterByOwnerId(local_identity);
+        Debug.Log(player);
         if (player == null)
         {
+            Debug.Log("is null");
             // Show username selection
             Username.instance.Show();
         }

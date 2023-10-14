@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
 
     float diff_angle;
 
+    public static PlayerController Local;
+
     // Start is called before the first frame update
     void Start()
     {

@@ -1,20 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using SpacetimeDB.Types;
-using TMPro;
 
-public class Username : MonoBehaviour
+public class Username : Singleton<Username>
 {
     [SerializeField] private GameObject _panel;
     [SerializeField] private TMP_InputField _usernameField;
 
     private bool _initialized = false;
 
-    public static Username instance;
-
     public void Show()
     {
+        Debug.Log("showing");
         if (!_initialized)
         {
             _initialized = true;
@@ -24,7 +24,6 @@ public class Username : MonoBehaviour
 
     private void OnEnable()
     {
-        instance = this;
         _panel.SetActive(false);
     }
 
