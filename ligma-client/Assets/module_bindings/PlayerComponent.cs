@@ -17,6 +17,9 @@ namespace SpacetimeDB.Types
 		public string Username;
 		[Newtonsoft.Json.JsonProperty("logged_in")]
 		public bool LoggedIn;
+		[Newtonsoft.Json.JsonProperty("color")]
+		[SpacetimeDB.Enum]
+		public SpacetimeDB.Types.PlayerColorType Color;
 
 		private static Dictionary<ulong, PlayerComponent> EntityId_Index = new Dictionary<ulong, PlayerComponent>(16);
 		private static Dictionary<SpacetimeDB.Identity, PlayerComponent> OwnerId_Index = new Dictionary<SpacetimeDB.Identity, PlayerComponent>(16);
@@ -46,6 +49,18 @@ namespace SpacetimeDB.Types
 			})),
 				new SpacetimeDB.SATS.ProductTypeElement("username", SpacetimeDB.SATS.AlgebraicType.CreatePrimitiveType(SpacetimeDB.SATS.BuiltinType.Type.String)),
 				new SpacetimeDB.SATS.ProductTypeElement("logged_in", SpacetimeDB.SATS.AlgebraicType.CreatePrimitiveType(SpacetimeDB.SATS.BuiltinType.Type.Bool)),
+				new SpacetimeDB.SATS.ProductTypeElement("color", SpacetimeDB.SATS.AlgebraicType.CreateSumType(new System.Collections.Generic.List<SpacetimeDB.SATS.SumTypeVariant>
+			{
+				new SpacetimeDB.SATS.SumTypeVariant("Red", SpacetimeDB.SATS.AlgebraicType.CreateProductType(new SpacetimeDB.SATS.ProductTypeElement[]
+			{
+			})),
+				new SpacetimeDB.SATS.SumTypeVariant("Blue", SpacetimeDB.SATS.AlgebraicType.CreateProductType(new SpacetimeDB.SATS.ProductTypeElement[]
+			{
+			})),
+				new SpacetimeDB.SATS.SumTypeVariant("Green", SpacetimeDB.SATS.AlgebraicType.CreateProductType(new SpacetimeDB.SATS.ProductTypeElement[]
+			{
+			})),
+			})),
 			});
 		}
 
@@ -61,6 +76,8 @@ namespace SpacetimeDB.Types
 				OwnerId = SpacetimeDB.Identity.From(productValue.elements[1].AsProductValue().elements[0].AsBytes()),
 				Username = productValue.elements[2].AsString(),
 				LoggedIn = productValue.elements[3].AsBool(),
+				Color = (PlayerColorType)Enum.Parse(typeof(PlayerColorType), productValue.elements[4].AsSumValue().tag.ToString())
+		,
 			};
 		}
 

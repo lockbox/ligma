@@ -11,6 +11,8 @@ public class Username : MonoBehaviour
 
     private bool _initialized = false;
 
+    public static Username instance;
+
     public void Show()
     {
         if (!_initialized)
@@ -22,6 +24,7 @@ public class Username : MonoBehaviour
 
     private void OnEnable()
     {
+        instance = this;
         _panel.SetActive(false);
     }
 
