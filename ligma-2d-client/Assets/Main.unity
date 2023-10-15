@@ -834,8 +834,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e74fd497308234a43901873b14cbcecd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userSpeed: 2
-  rotateSpeed: 3
+  userSpeed: 1.25
+  rotateSpeed: 1.5
+  maxSpeed: 1.5
   player_sprite: {fileID: 1293374866}
 --- !u!114 &911809432
 MonoBehaviour:
